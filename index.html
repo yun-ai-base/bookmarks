@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>项目导航 · yun-ai-base</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='12' y='8' width='76' height='84' rx='8' fill='%23c9a84c'/%3E%3Crect x='20' y='16' width='60' height='68' rx='4' fill='%23121214'/%3E%3Cpath d='M32 40h36M32 52h28M32 64h22' stroke='%23c9a84c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -19,6 +20,10 @@
   --accent: #c9a84c;
   --accent-dim: rgba(201,168,76,0.12);
   --green: #4a9e6f;
+  --cat-ai: #4a7fc9;
+  --cat-tool: #c9a84c;
+  --cat-content: #c94a4a;
+  --cat-data: #8a6fc9;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -136,8 +141,10 @@ body::before {
 }
 .card-icon.ai { background: rgba(74,127,201,0.15); }
 .card-icon.tool { background: var(--accent-dim); }
-.card-icon.zh { background: rgba(201,74,74,0.15); }
+.card-icon.content { background: rgba(201,74,74,0.15); }
 .card-icon.data { background: rgba(138,111,201,0.15); }
+.card { border-left: 3px solid transparent; }
+.card:hover { border-left-color: var(--card-cat, var(--muted)); }
 .card-info { flex: 1; min-width: 0; }
 .card-name {
   font-size: 14px;
@@ -199,6 +206,38 @@ body::before {
   margin-bottom: 12px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card { animation: fadeInUp 0.4s ease both; }
+.search-wrap {
+  margin: 20px auto 0;
+  max-width: 400px;
+  position: relative;
+}
+.search-wrap input {
+  width: 100%;
+  padding: 10px 16px 10px 38px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-wrap input:focus { border-color: var(--accent); }
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap .search-icon {
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 14px;
+  pointer-events: none;
+}
 @media (max-width: 640px) {
   .header { padding: 40px 20px 30px; }
   .header h1 { font-size: 22px; }
@@ -210,7 +249,11 @@ body::before {
 
 <div class="header">
   <h1>yun-ai-base · <span>项目导航</span></h1>
-  <p>所有 GitHub Pages 项目的统一入口</p>
+  <p>所有 GitHub Pages 项目的统一入口 · 搜索筛选快速定位</p>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="搜索项目名称或关键词..." autocomplete="off">
+  </div>
   <div class="count" id="count">加载中…</div>
 </div>
 
@@ -233,7 +276,6 @@ const FALLBACK = [
   { name: 'zhihu-wudao',       desc: '知乎回答精选 · 最近你悟通了什么道理/现象？', icon: '💡', cat: 'content' },
   { name: 'collection',        desc: '个人内容收藏库 · AI 驱动的知识管理与检索',      icon: '📚', cat: 'content' },
   { name: 'research-frontiers', desc: '科学突破前沿 · 全球科研突破聚合与AI解读',   icon: '🔬', cat: 'ai' },
-  { name: 'project-atlas',    desc: '项目总览 · Project Atlas — 所有项目统一入口',  icon: '🗺️', cat: 'tool' },
   { name: 'bookmarks',         desc: '个人书签导航页（就是本页）',                 icon: '🔖', cat: 'tool' },
   { name: 'rss-reader',        desc: 'RSS reader · 静态版',                       icon: '📡', cat: 'tool' },
   { name: 'hot-trending',      desc: 'Hot trending aggregator · 热门趋势聚合',      icon: '🔥', cat: 'tool' },
@@ -255,15 +297,18 @@ const FALLBACK = [
 const CATS = {
   ai:      { label: 'AI 对话',       emoji: '🤖', cls: 'ai' },
   tool:    { label: '工具',           emoji: '🛠️', cls: 'tool' },
-  content: { label: '内容精选',       emoji: '📖', cls: 'zh' },
+  content: { label: '内容精选',       emoji: '📖', cls: 'content' },
   data:    { label: '数据分析',       emoji: '📊', cls: 'data' },
 };
 
+var CAT_COLORS = { ai: "#4a7fc9", tool: "#c9a84c", content: "#c94a4a", data: "#8a6fc9" };
+var animIndex = 0;
 function render(items) {
+  animIndex = 0;
   const byCat = {};
   items.forEach(i => { (byCat[i.cat] = byCat[i.cat] || []).push(i); });
-  const order = ['ai', 'tool', 'content', 'data'];
-  let html = '';
+  const order = ["ai", "tool", "content", "data"];
+  let html = "";
   order.forEach(cat => {
     const list = byCat[cat];
     if (!list) return;
@@ -272,7 +317,7 @@ function render(items) {
       <div class="section-title"><span class="emoji">${info.emoji}</span><h2>${info.label}</h2></div>
       <div class="grid">`;
     list.forEach(item => {
-      html += `<a class="card" href="https://yun-ai-base.github.io/${item.name}/" target="_blank" rel="noopener">
+      html += `<a class="card" href="https://yun-ai-base.github.io/${item.name}/" target="_blank" rel="noopener" style="--card-cat:${CAT_COLORS[cat]||"#4a4844"};animation-delay:${animIndex++ * 0.04}s">
         <div class="card-icon ${info.cls}">${item.icon}</div>
         <div class="card-info">
           <div class="card-name">${item.name}</div>
@@ -283,8 +328,8 @@ function render(items) {
     });
     html += `</div></div>`;
   });
-  document.getElementById('content').innerHTML = html;
-  document.getElementById('count').textContent = items.length + ' 个项目';
+  document.getElementById("content").innerHTML = html;
+  document.getElementById("count").textContent = items.length + " 个项目";
 }
 
 (async function(){
@@ -305,6 +350,26 @@ function render(items) {
     document.getElementById('status').textContent = '离线模式 · 显示本地缓存';
   }
 })();
+
+// Search filter
+var searchInput = document.getElementById("search");
+if (searchInput) {
+  searchInput.addEventListener("input", function(e) {
+    var q = e.target.value.toLowerCase().trim();
+    var cards = document.querySelectorAll(".card");
+    if (!cards.length) return;
+    cards.forEach(function(c) {
+      var name = c.querySelector(".card-name").textContent.toLowerCase();
+      var desc = c.querySelector(".card-desc").textContent.toLowerCase();
+      c.style.display = (!q || name.indexOf(q) > -1 || desc.indexOf(q) > -1) ? "" : "none";
+    });
+    document.querySelectorAll(".section").forEach(function(s) {
+      var hidden = s.querySelectorAll(".card[style*=\"display: none\"]").length;
+      var total = s.querySelectorAll(".card").length;
+      s.style.display = (hidden === total) ? "none" : "";
+    });
+  });
+}
 </script>
 
 </body>
