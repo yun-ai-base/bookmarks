@@ -307,6 +307,20 @@ const CATS = {
 
 var CAT_COLORS = { ai: "#4a7fc9", tool: "#c9a84c", content: "#c94a4a", data: "#8a6fc9" };
 var animIndex = 0;
+const NAME_MAP = {
+  'population-report': '中国人口变局', 'zhihu-curated': '知乎精选：改变自己',
+  'zhihu-wudao': '知乎精选：悟通道理', 'collection': '收藏管理系统',
+  'research-frontiers': '科研前沿动态', 'project-atlas': '项目总览',
+  'bookmarks': '书签导航', 'rss-reader': 'RSS 阅读器',
+  'hot-trending': '热门趋势', 'vpn-guide': 'VPN 选购指南',
+  'tool-collection': '实用工具集', 'cognitive-biases-atlas': '认知偏见图谱',
+  'morris-quotes': 'Morris 语录集', 'ai-chat-room': 'AI 聊天室',
+  'cosmic-discussion': '宇宙大爆炸对话', 'being-towards-death': '向死而生',
+  'ocean-studio': '海洋工作室', 'philomap': '哲学星球',
+  'teacher-trend': '教师招聘数据', 'writers-gallery': '百位作家画廊',
+  'psychscope': '心理学大师图谱', 'sciomap': '科学星图',
+  'x-follow-nav': 'X 关注导航', 'twinverse': '孪生宇宙',
+};
 function render(items) {
   animIndex = 0;
   const byCat = {};
@@ -317,23 +331,18 @@ function render(items) {
     const list = byCat[cat];
     if (!list) return;
     const info = CATS[cat];
-    html += `<div class="section">
-      <div class="section-title"><span class="emoji">${info.emoji}</span><h2>${info.label}</h2></div>
-      <div class="grid">`;
+    html += '<div class="section"><div class="section-title"><span class="emoji">' + info.emoji + '</span><h2>' + info.label + '</h2></div><div class="grid">';
     list.forEach(item => {
-      html += `<a class="card" href="https://yun-ai-base.github.io/${item.name}/" target="_blank" rel="noopener" style="--card-cat:${CAT_COLORS[cat]||"#4a4844"};animation-delay:${animIndex++ * 0.04}s">
-        <div class="card-icon ${info.cls}">${item.icon}</div>
-        <div class="card-info">
-          <div class="card-name">${item.name}</div>
-          <div class="card-desc">${item.desc}</div>
-        </div>
-        <span class="card-arrow">→</span>
-      </a>`;
+      var displayName = NAME_MAP[item.name] || item.name;
+      html += '<a class="card" href="https://yun-ai-base.github.io/' + item.name + '/" target="_blank" rel="noopener" style="--card-cat:' + (CAT_COLORS[cat]||'#4a4844') + ';animation-delay:' + (animIndex++ * 0.04) + 's">';
+      html += '<div class="card-icon ' + info.cls + '">' + item.icon + '</div>';
+      html += '<div class="card-info"><div class="card-name">' + displayName + '</div><div class="card-desc">' + item.desc + '</div></div>';
+      html += '<span class="card-arrow">→</span></a>';
     });
-    html += `</div></div>`;
+    html += '</div></div>';
   });
-  document.getElementById("content").innerHTML = html;
-  document.getElementById("count").textContent = items.length + " 个项目";
+  document.getElementById('content').innerHTML = html;
+  document.getElementById('count').textContent = items.length + ' 个项目';
 }
 
 (async function(){
