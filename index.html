@@ -143,6 +143,42 @@ body::before {
 .card-icon.tool { background: var(--accent-dim); }
 .card-icon.content { background: rgba(201,74,74,0.15); }
 .card-icon.data { background: rgba(138,111,201,0.15); }
+/* 孪生宇宙 & 项目总览 — 常驻高亮卡片 */
+.card.featured {
+  background: linear-gradient(135deg, rgba(138,111,201,0.20) 0%, rgba(74,127,201,0.14) 100%);
+  border-color: rgba(168,140,255,0.55);
+  box-shadow: 0 0 0 1px rgba(168,140,255,0.18), 0 6px 18px rgba(120,90,220,0.18);
+}
+.card.featured:hover {
+  background: linear-gradient(135deg, rgba(138,111,201,0.30) 0%, rgba(74,127,201,0.22) 100%);
+  border-color: rgba(190,165,255,0.85);
+  transform: translateY(-2px);
+}
+.card.featured .card-icon {
+  background: rgba(168,140,255,0.22);
+  box-shadow: 0 0 12px rgba(168,140,255,0.45);
+}
+.card.featured .card-name {
+  color: #e9e2ff;
+}
+/* 孪生宇宙 & 项目总览 — 常驻高亮卡片 */
+.card.featured {
+  background: linear-gradient(135deg, rgba(138,111,201,0.20) 0%, rgba(74,127,201,0.14) 100%);
+  border-color: rgba(168,140,255,0.55);
+  box-shadow: 0 0 0 1px rgba(168,140,255,0.18), 0 6px 18px rgba(120,90,220,0.18);
+}
+.card.featured:hover {
+  background: linear-gradient(135deg, rgba(138,111,201,0.30) 0%, rgba(74,127,201,0.22) 100%);
+  border-color: rgba(190,165,255,0.85);
+  transform: translateY(-2px);
+}
+.card.featured .card-icon {
+  background: rgba(168,140,255,0.22);
+  box-shadow: 0 0 12px rgba(168,140,255,0.45);
+}
+.card.featured .card-name {
+  color: #e9e2ff;
+}
 .card { border-left: 3px solid transparent; }
 .card:hover { border-left-color: var(--card-cat, var(--muted)); }
 .card-info { flex: 1; min-width: 0; }
@@ -277,10 +313,10 @@ const FALLBACK = [
   { name: 'zhihu-wudao',       desc: '知乎回答精选 · 最近你悟通了什么道理/现象？', icon: '💡', cat: 'content' },
   { name: 'collection',        desc: '个人内容收藏库 · AI 驱动的知识管理与检索',      icon: '📚', cat: 'content' },
   { name: 'research-frontiers', desc: '科学突破前沿 · 全球科研突破聚合与AI解读',   icon: '🔬', cat: 'content' },
-  { name: 'project-atlas',    desc: '项目总览 · Project Atlas — 所有项目统一入口',  icon: '🗺️', cat: 'tool' },
+  { name: 'project-atlas',    desc: '项目总览 · 所有项目统一入口',  icon: '🗺️', cat: 'tool' },
   { name: 'bookmarks',         desc: '个人书签导航页（就是本页）',                 icon: '🔖', cat: 'tool' },
-  { name: 'rss-reader',        desc: 'RSS reader · 静态版',                       icon: '📡', cat: 'tool' },
-  { name: 'hot-trending',      desc: 'Hot trending aggregator · 热门趋势聚合',      icon: '🔥', cat: 'tool' },
+  { name: 'rss-reader',        desc: 'RSS 阅读器 · 静态页面版',                       icon: '📡', cat: 'tool' },
+  { name: 'hot-trending',      desc: '热门趋势聚合 · 多平台热点追踪',      icon: '🔥', cat: 'tool' },
   { name: 'vpn-guide',         desc: '2026 VPN 选购指南 · 旗舰/平价/机场/免费对比', icon: '🛡️', cat: 'tool' },
   { name: 'tool-collection',   desc: '实用工具集 · 在线工具聚合导航',                icon: '🧰', cat: 'tool' },
   { name: 'cognitive-biases-atlas', desc: '认知星图 · 21种思维谬误可视化交互图谱', icon: '🧠', cat: 'tool' },
@@ -297,6 +333,8 @@ const FALLBACK = [
   { name: 'x-follow-nav',      desc: 'X 关注分类导航 · 103个关注按主题分类',             icon: '🐦', cat: 'content' },
 	  { name: 'twinverse',         desc: '孪生宇宙 · 项目聚合门户，自动同步所有项目',       icon: '🧬', cat: 'tool' },
 	  { name: 'math-giants',       desc: '数学史上的二十位巨人 · 可视化传记',                icon: '🔢', cat: 'content' },
+      { name: 'honglou-mansion',  desc: '红楼梦大观园 · 3D人物关系与名场面可视化',        icon: '🏯', cat: 'content' },
+      { name: 'ai-assistant-guide',  desc: 'AI 助手使用指南 · 提示词与最佳实践',               icon: '🤖', cat: 'tool' },
 ];
 
 const CATS = {
@@ -308,6 +346,7 @@ const CATS = {
 
 var CAT_COLORS = { ai: "#4a7fc9", tool: "#c9a84c", content: "#c94a4a", data: "#8a6fc9" };
 var animIndex = 0;
+const FEATURED = new Set(["twinverse", "project-atlas"]);
 const NAME_MAP = {
   'population-report': '中国人口变局', 'zhihu-curated': '知乎精选：改变自己',
   'zhihu-wudao': '知乎精选：悟通道理', 'collection': '收藏管理系统',
@@ -322,6 +361,13 @@ const NAME_MAP = {
   'psychscope': '心理学大师图谱', 'sciomap': '科学星图',
   'x-follow-nav': 'X 关注导航', 'twinverse': '孪生宇宙',
   'math-giants': '数学史上的巨人',
+  'ai-assistant-guide': 'AI 助手使用指南',
+  'existence-probability': '存在概率论',
+  '180day-plan': '180天跃迁计划',
+  'book-gallery': '我的书库',
+  'telegram-nav': 'Telegram 群组/频道导航',
+  'poetry-glory-world': '中国诗词人荣耀世界',
+  'chinese-colors': '中国传统色彩',
 };
 function render(items) {
   animIndex = 0;
@@ -336,7 +382,8 @@ function render(items) {
     html += '<div class="section"><div class="section-title"><span class="emoji">' + info.emoji + '</span><h2>' + info.label + '</h2></div><div class="grid">';
     list.forEach(item => {
       var displayName = NAME_MAP[item.name] || item.name;
-      html += '<a class="card" href="https://yun-ai-base.github.io/' + item.name + '/" target="_blank" rel="noopener" style="--card-cat:' + (CAT_COLORS[cat]||'#4a4844') + ';animation-delay:' + (animIndex++ * 0.04) + 's">';
+      var featCls = FEATURED.has(item.name) ? ' featured' : '';
+      html += '<a class="card' + featCls + '" href="https://yun-ai-base.github.io/' + item.name + '/" target="_blank" rel="noopener" style="--card-cat:' + (CAT_COLORS[cat]||'#4a4844') + ';animation-delay:' + (animIndex++ * 0.04) + 's">';
       html += '<div class="card-icon ' + info.cls + '">' + item.icon + '</div>';
       html += '<div class="card-info"><div class="card-name">' + displayName + '</div><div class="card-desc">' + item.desc + '</div></div>';
       html += '<span class="card-arrow">→</span></a>';
