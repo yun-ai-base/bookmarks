@@ -161,24 +161,6 @@ body::before {
 .card.featured .card-name {
   color: #e9e2ff;
 }
-/* 孪生宇宙 & 项目总览 — 常驻高亮卡片 */
-.card.featured {
-  background: linear-gradient(135deg, rgba(138,111,201,0.20) 0%, rgba(74,127,201,0.14) 100%);
-  border-color: rgba(168,140,255,0.55);
-  box-shadow: 0 0 0 1px rgba(168,140,255,0.18), 0 6px 18px rgba(120,90,220,0.18);
-}
-.card.featured:hover {
-  background: linear-gradient(135deg, rgba(138,111,201,0.30) 0%, rgba(74,127,201,0.22) 100%);
-  border-color: rgba(190,165,255,0.85);
-  transform: translateY(-2px);
-}
-.card.featured .card-icon {
-  background: rgba(168,140,255,0.22);
-  box-shadow: 0 0 12px rgba(168,140,255,0.45);
-}
-.card.featured .card-name {
-  color: #e9e2ff;
-}
 .card { border-left: 3px solid transparent; }
 .card:hover { border-left-color: var(--card-cat, var(--muted)); }
 .card-info { flex: 1; min-width: 0; }
@@ -280,6 +262,7 @@ body::before {
   .grid { grid-template-columns: 1fr; }
 }
 </style>
+<script src="projects.js"></script>
 </head>
 <body>
 
@@ -307,39 +290,10 @@ body::before {
 </div>
 
 <script>
-const FALLBACK = [
-  { name: 'population-report', desc: '中国人口变局 — 多维数据综合分析报告',         icon: '📊', cat: 'data' },
-  { name: 'zhihu-curated',     desc: '知乎回答精选 · 用什么方法能尽快改变自己？', icon: '📖', cat: 'content' },
-  { name: 'zhihu-wudao',       desc: '知乎回答精选 · 最近你悟通了什么道理/现象？', icon: '💡', cat: 'content' },
-  { name: 'collection',        desc: '个人内容收藏库 · AI 驱动的知识管理与检索',      icon: '📚', cat: 'content' },
-  { name: 'research-frontiers', desc: '科学突破前沿 · 全球科研突破聚合与AI解读',   icon: '🔬', cat: 'content' },
-  { name: 'project-atlas',    desc: '项目总览 · 所有项目统一入口',  icon: '🗺️', cat: 'tool' },
-  { name: 'bookmarks',         desc: '个人书签导航页（就是本页）',                 icon: '🔖', cat: 'tool' },
-  { name: 'rss-reader',        desc: 'RSS 阅读器 · 静态页面版',                       icon: '📡', cat: 'tool' },
-  { name: 'hot-trending',      desc: '热门趋势聚合 · 多平台热点追踪',      icon: '🔥', cat: 'tool' },
-  { name: 'vpn-guide',         desc: '2026 VPN 选购指南 · 旗舰/平价/机场/免费对比', icon: '🛡️', cat: 'tool' },
-  { name: 'tool-collection',   desc: '实用工具集 · 在线工具聚合导航',                icon: '🧰', cat: 'tool' },
-  { name: 'cognitive-biases-atlas', desc: '认知星图 · 21种思维谬误可视化交互图谱', icon: '🧠', cat: 'tool' },
-  { name: 'morris-quotes',     desc: 'Morris 语录集 · 100 条认知洞察与智慧点评',    icon: '✨', cat: 'content' },
-  { name: 'ai-chat-room',      desc: 'AI 聊天室 · 多模型对话界面',                 icon: '💬', cat: 'ai' },
-  { name: 'cosmic-discussion', desc: '宇宙大爆炸 · AI 终端深度对话可视化',          icon: '🌌', cat: 'ai' },
-  { name: 'being-towards-death', desc: '向死而生 · AI 终端哲学对话可视化',          icon: '🕯️', cat: 'ai' },
-  { name: 'ocean-studio',      desc: '海洋工作室 · 创意交互实验空间',               icon: '🌊', cat: 'ai' },
-  { name: 'philomap',          desc: '哲学星球 · 40位哲学家的交互式思想星图',          icon: '🌌', cat: 'content' },
-  { name: 'teacher-trend',     desc: '江苏省教师招聘数据可视化分析',               icon: '📊', cat: 'data' },
-  { name: 'writers-gallery',   desc: '百位作家画廊 · 中外作家文学宇宙',               icon: '📚', cat: 'content' },
-  { name: 'psychscope',        desc: '心智探索 · 心理学大师知识图谱',                 icon: '🧠', cat: 'content' },
-  { name: 'sciomap',           desc: '科学星图 · 科学大师知识图谱',                   icon: '🔬', cat: 'content' },
-  { name: 'x-follow-nav',      desc: 'X 关注分类导航 · 103个关注按主题分类',             icon: '🐦', cat: 'content' },
-	  { name: 'twinverse',         desc: '孪生宇宙 · 项目聚合门户，自动同步所有项目',       icon: '🧬', cat: 'tool' },
-	  { name: 'math-giants',       desc: '数学史上的二十位巨人 · 可视化传记',                icon: '🔢', cat: 'content' },
-      { name: 'honglou-mansion',  desc: '红楼梦大观园 · 3D人物关系与名场面可视化',        icon: '🏯', cat: 'content' },
-      { name: 'ai-assistant-guide',  desc: 'AI 助手使用指南 · 提示词与最佳实践',               icon: '🤖', cat: 'tool' },
-      { name: 'chinese-hall-of-fame', desc: '中国历史群星 · 三维可视化名人堂',                   icon: '🏛️', cat: 'content' },
-      { name: 'naval-principles', desc: '纳瓦尔的40则人生建议 · 跨学科深度拓展',                     icon: '📜', cat: 'content' },
-      { name: 'claude-code-features', desc: 'Claude Code 功能可视化手册 · 命令分类与场景速查',     icon: '📘', cat: 'tool' },
-      { name: 'physics-panorama', desc: '物理学全景图 · 五纪元三十一节点交互可视化',     icon: '📄', cat: 'content' },
-];
+// 项目注册表（统一数据源，见 projects.js）
+// 在线：GitHub API 实时仓库为准，新项目自动出现；
+// 离线：本表作为完整兜底列表。
+const PROJECTS = window.PROJECTS || [];
 
 const CATS = {
   ai:      { label: 'AI 对话',       emoji: '🤖', cls: 'ai' },
@@ -351,33 +305,6 @@ const CATS = {
 var CAT_COLORS = { ai: "#4a7fc9", tool: "#c9a84c", content: "#c94a4a", data: "#8a6fc9" };
 var animIndex = 0;
 const FEATURED = new Set(["twinverse", "project-atlas"]);
-const NAME_MAP = {
-  'population-report': '中国人口变局', 'zhihu-curated': '知乎精选：改变自己',
-  'zhihu-wudao': '知乎精选：悟通道理', 'collection': '收藏管理系统',
-  'research-frontiers': '科研前沿动态', 'project-atlas': '项目总览',
-  'bookmarks': '书签导航', 'rss-reader': 'RSS 阅读器',
-  'hot-trending': '热门趋势', 'vpn-guide': 'VPN 选购指南',
-  'tool-collection': '实用工具集', 'cognitive-biases-atlas': '认知偏见图谱',
-  'morris-quotes': 'Morris 语录集', 'ai-chat-room': 'AI 聊天室',
-  'cosmic-discussion': '宇宙大爆炸对话', 'being-towards-death': '向死而生',
-  'ocean-studio': '海洋工作室', 'philomap': '哲学星球',
-  'teacher-trend': '教师招聘数据', 'writers-gallery': '百位作家画廊',
-  'psychscope': '心理学大师图谱', 'sciomap': '科学星图',
-  'x-follow-nav': 'X 关注导航', 'twinverse': '孪生宇宙',
-  'math-giants': '数学史上的巨人',
-  'ai-assistant-guide': 'AI 助手使用指南',
-  'chinese-hall-of-fame': '中国历史群星',
-  'naval-principles': '纳瓦尔的人生建议',
-  'existence-probability': '存在概率论',
-  '180day-plan': '180天跃迁计划',
-  'book-gallery': '我的书库',
-  'honglou-mansion': '红楼梦大观园',
-  'telegram-nav': 'Telegram 群组/频道导航',
-  'poetry-glory-world': '中国诗词人荣耀世界',
-  'chinese-colors': '中国传统色彩',
-  'claude-code-features': 'Claude Code 功能手册',
-  'physics-panorama': '物理学全景图',
-};
 function render(items) {
   animIndex = 0;
   const byCat = {};
@@ -390,11 +317,12 @@ function render(items) {
     const info = CATS[cat];
     html += '<div class="section"><div class="section-title"><span class="emoji">' + info.emoji + '</span><h2>' + info.label + '</h2></div><div class="grid">';
     list.forEach(item => {
-      var displayName = NAME_MAP[item.name] || item.name;
+      var displayName = item.zh || item.name;
+      var descText = item.desc || 'GitHub Pages 项目';
       var featCls = FEATURED.has(item.name) ? ' featured' : '';
       html += '<a class="card' + featCls + '" href="https://yun-ai-base.github.io/' + item.name + '/" target="_blank" rel="noopener" style="--card-cat:' + (CAT_COLORS[cat]||'#4a4844') + ';animation-delay:' + (animIndex++ * 0.04) + 's">';
       html += '<div class="card-icon ' + info.cls + '">' + item.icon + '</div>';
-      html += '<div class="card-info"><div class="card-name">' + displayName + '</div><div class="card-desc">' + item.desc + '</div></div>';
+      html += '<div class="card-info"><div class="card-name">' + displayName + '</div><div class="card-desc">' + descText + '</div></div>';
       html += '<span class="card-arrow">→</span></a>';
     });
     html += '</div></div>';
@@ -409,16 +337,22 @@ function render(items) {
     if (!r.ok) throw Error('fail');
     const repos = await r.json();
     const pages = repos.filter(r => r.has_pages).map(r => {
-      const f = FALLBACK.find(fb => fb.name === r.name);
-      return { name: r.name, desc: r.description || (f ? f.desc : ''), icon: f ? f.icon : '📄', cat: f ? f.cat : 'tool' };
+      const conf = PROJECTS.find(p => p.name === r.name) || {};
+      return {
+        name: r.name,
+        zh: conf.zh || '',
+        desc: conf.desc || r.description || 'GitHub Pages 项目',
+        icon: conf.icon || '📄',
+        cat: conf.cat || 'tool'
+      };
     });
     document.getElementById('loading').style.display = 'none';
-    render(pages.length ? pages : FALLBACK);
+    render(pages.length ? pages : PROJECTS);
     document.getElementById('status').textContent = '已同步 GitHub Pages · 自动更新';
   } catch(e) {
     document.getElementById('loading').style.display = 'none';
-    render(FALLBACK);
-    document.getElementById('status').textContent = '离线模式 · 显示本地缓存';
+    render(PROJECTS);
+    document.getElementById('status').textContent = '离线模式 · 显示本地注册表';
   }
 })();
 
