@@ -49,4 +49,9 @@ window.PROJECTS = [
   { name: 'chinese-colors',        zh: '中国传统色彩',           icon: '🎨', cat: 'content' },
   // ---- 2026-08-02 新增 ----
   { name: 'diary',                 zh: '剪影 · 灵感收藏站',      desc: '私人灵感收藏站 · 名句/奇思/杂思/美图随手记，Git 永久版本化', icon: '✨', cat: 'content' },
+  // ---- 2026-08-04 自动巡检新增 ----
+  { name: 'economics-map',         zh: '经济经纬',               desc: '经济经纬 · 思想交易所 — 49 位经济学大师的思想光谱与生活兑换', icon: '💹', cat: 'content' },
+  // ---- 2026-08-06 自动巡检新增 ----
+  { name: 'star-gazer',            zh: 'StarGazer 深空影像',     desc: 'StarGazer · 深空影像探索 — 304 张 NASA 真实影像画廊', icon: '🌌', cat: 'content' },
+  { name: 'philosophy-atlas',      zh: '哲学思想图谱',           desc: '脉络 · 思想之河 — 人类哲学知识图谱：39学派/三视角/概念暗流', icon: '🧭', cat: 'content' },
 ];
